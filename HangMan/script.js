@@ -56,11 +56,9 @@ function generateLettersButtons() {
     alphabet.forEach(letter => {
 
         var letterButton = document.createElement("div");
-
         letterButton.textContent = letter;
-
         letterButton.className = "letter-button";
-
+        letterButton.id = letter;
         letterButtonsContainer.appendChild(letterButton);
 
         letterButton.onclick = () => {
@@ -74,6 +72,9 @@ function generateLettersButtons() {
     })
 }
 
+// function checkLetter(){
+
+// }
 
 
 
