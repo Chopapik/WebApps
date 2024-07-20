@@ -35,7 +35,7 @@ function displayWord() {
     var wordContainer = document.getElementById("word-container")
     wordContainer.innerHTML = '';
 
-    word.forEach(function (letter) {
+    word.forEach(letter => {
 
         var letterSpan = document.createElement("span");
 
@@ -49,8 +49,36 @@ function displayWord() {
     });
 }
 
+function generateLettersButtons() {
+
+    var letterButtonsContainer = document.getElementById("letter-buttons-container");
+
+    alphabet.forEach(letter => {
+
+        var letterButton = document.createElement("div");
+
+        letterButton.textContent = letter;
+
+        letterButton.className = "letter-button";
+
+        letterButtonsContainer.appendChild(letterButton);
+
+        letterButton.onclick = () => {
+            letterButton.classList.add("clicked");
+
+            setTimeout(() => {
+                letterButton.classList.remove("clicked");
+            }, 50);
+
+        }
+    })
+}
+
+
+
 
 function main() {
     displayWord();
     generateLettersButtons();
+
 }
