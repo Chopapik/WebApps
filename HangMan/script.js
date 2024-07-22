@@ -24,34 +24,43 @@ var words = [
 const alphabet = Array.from({ length: 26 }, (_, i) => String.fromCharCode(65 + i));
 
 
-function randWord() {
-    return Math.floor(Math.random() * words.length);
+const randWord = () => {
+    // return Math.floor(Math.random() * words.length);
+    return 7;
 }
 
 var randomWord = randWord();
 var word = words[randomWord];
 
-function displayWord() {
+const displayWord = () => {
     var wordContainer = document.getElementById("word-container")
     wordContainer.innerHTML = '';
 
+
     word.forEach(letter => {
+        var letterSpanContainer = document.createElement("div")
+        letterSpanContainer.className = "word-letter-container";
+        wordContainer.appendChild(letterSpanContainer);
 
         var letterSpan = document.createElement("span");
-
-        letterSpan.textContent = letter;
-
+        var wordLetter = letter;
         letterSpan.className = "word-letter";
+        letterSpan.id = letter.toUpperCase();
+        letterSpan.style.visibility = 'hidden';
+        console.log(wordLetter);
 
-        wordContainer.appendChild(letterSpan);
+        letterSpan.textContent = wordLetter;
 
-        // div.style.visibility = 'hidden';
+        letterSpanContainer.appendChild(letterSpan);
+
     });
-}
 
-function generateLettersButtons() {
+};
+
+const generateLettersButtons = () => {
 
     var letterButtonsContainer = document.getElementById("letter-buttons-container");
+    letterButtonsContainer.innerHTML = '';
 
     alphabet.forEach(letter => {
 
@@ -61,6 +70,7 @@ function generateLettersButtons() {
         letterButton.id = letter;
         letterButtonsContainer.appendChild(letterButton);
 
+
         letterButton.onclick = () => {
             letterButton.classList.add("clicked");
 
@@ -68,18 +78,53 @@ function generateLettersButtons() {
                 letterButton.classList.remove("clicked");
             }, 50);
 
+            var isCorrect;
+
+
+            word.forEach(letter => {
+                if (letter.toUpperCase() === letterButton.id) {
+                    const matchedLetters = document.querySelectorAll(`.word-letter#${letterButton.id}`);
+                    matchedLetters.forEach(matchedLetter => {
+                        console.log("Letter matched");
+                        matchedLetter.style.visibility = 'visible';
+                        isCorrect = true;
+                    });
+                }
+            });
+            console.log(isCorrect);
+            killHeart(isCorrect);
+        };
+
+    });
+}
+
+
+const generateHearts = () => {
+    var heartContainer = document.getElementById("heart-container");
+
+    var i = 0;
+
+    for (i; i < 5; i++) {
+        var heart = document.createElement("div");
+        heart.className = "heart";
+        heart.id = i;
+        heartContainer.appendChild(heart);
+    }
+}
+let letterIdToDelete = 4;
+
+const killHeart = (isCorrect) => {
+    if (!isCorrect && letterIdToDelete >= 0) {
+        var killedHeart = document.querySelector(`.heart[id='${letterIdToDelete}']`);
+        killedHeart.style.visibility = 'hidden';
+        letterIdToDelete--;
+        if (letterIdToDelete < 0) {
+            document.getElementById("heart-container").textContent = "GAME OVER";
         }
-    })
+    }
 }
 
-// function checkLetter(){
 
-// }
-
-
-
-function main() {
-    displayWord();
-    generateLettersButtons();
-
-}
+displayWord();
+generateLettersButtons();
+generateHearts();
